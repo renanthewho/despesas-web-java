@@ -1,5 +1,8 @@
 <%-- imports da diretiva page --%>
-<%@ page language="java" contentType="text/html; charset=utf-8"	pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"	pageEncoding="utf-8"
+import="br.com.impacta.despesaswebjava.DAO.*,
+        br.com.impacta.despesaswebjava.models.*,
+        java.util.*"%>
 
 <!DOCTYPE html>
 <html lang="pt">
@@ -16,7 +19,7 @@
 	<div class="container">
 		<div class="navbar navbar-expand-sm bg-light">Despesas Pessoais</div>
 			<div class="panel-body">
-				[Aqui um texto introdutório da tabela]
+				Listagem das ultimas despesas pessoais registradas.
 			</div>
 		<table class="table">
 			<thead>
@@ -30,14 +33,20 @@
 			</thead>
 			<tbody>
 				<%-- Buscar os dados  --%>
+				<% 
+				  DespesaDAO dao = new DespesaDAO();
+				  List<Despesa> despesas = dao.getDespesas();
+				%>
+				<% for(Despesa despesa : despesas) { %>
 				<%--Início do bloco de repetição --%>
 					<tr>
-						<td>[exibir-descrição]</td>
-						<td>[exibir-categoria]</td>
-						<td>[exibir-data]</td>
-						<td>[exibir-valor]</td>
-						<td>[exibir-observações]</td>
+						<td><%=despesa.getDescricao() %></td>
+						<td><%=despesa.getCategoria() %></td>
+						<td><%=despesa.getData() %></td>
+						<td><%=String.format("R$ %.2f", despesa.getValor()) %></td>
+						<td><%= (despesa.getObservacoes() != null) ? despesa.getObservacoes() : "" %></td>
 					</tr>
+			    <%} %>
 				<%--Fim do bloco de repetição --%>
 			</tbody>
 		</table>
